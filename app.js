@@ -4,10 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose =  require("mongoose");
 var index = require('./routes/index');
 var users = require('./routes/users');
 var data = require('./routes/data');
+var manage = require('./routes/manage');
 
 var app = express();
 
@@ -38,11 +39,19 @@ app.all('*', function(req, res, next) {
         next();
     }
 });
-// 接口模块s
+//====================***********连接数据库start**********=================
+// 引入mongodb模块，获得客户端对象
+var MongoClient = require('mongodb').MongoClient;
+var DB_CONN_STR  = "mongodb://localhost:27017/civilservant";
+// 定义函数表达式，用于操作数据库并返回结果
+mongoose.connect(DB_CONN_STR);
+//====================***********连接数据库end**********=================
+//====================***********接口模块start**********=================
 app.use('/', index);
 app.use('/users', users);
 app.use('/data', data);
-// 接口模块e
+app.use('/manage', manage);
+//====================***********接口模块start**********=================
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
