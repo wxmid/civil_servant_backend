@@ -3,41 +3,49 @@
  */
 var express = require('express');
 var router = express.Router();
+var mongoose    = require('mongoose')
 var Schema = mongoose.Schema;
 //骨架模版
-var edudatasSchema = new Schema({
+var edudataSchema = new Schema({
     thumbnail: String,
     imgList: Array,
     title: String,
     price: Number,
     browseCount: Number,
-    year     : Number,
-    summary  : String,
-    poster   : String,
-    flash    : String
+    onOff: Boolean,
+    description: String
 })
+let result = {
+    status: 0,
+    desc: 'success'
+}
 //模型
-var Movie = mongoose.model('edudatas', edudatasSchema);
-//存储数据
-var edudata = new Movie({
-    title: '黑衣人三',
-    doctor: '史密斯',
-    year: 2018,
-    flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-    country: '美国',
-    language: '英语',
-    summary: '好片'
+var Edudata = mongoose.model('edudata', edudataSchema);
+router.post('/addData', function(req, res, next) {
+    //存储数据
+    console.log(req.body)
+    var edudata = new Edudata(req.body)
+    //保存数据库
+    edudata.save(function(err) {
+        if (err) {
+            result.status = 1
+            result.desc = '保存失败'
+            return;
+        }
+        console.log('meow');
+    });
+    res.send(result);
+});
+router.get('/getdataList',function (req, res, next) {
+    Edudata.find({},function (err,resf) {
+        if (err) {
+            result.status = 1
+            result.desc = '保存失败'
+            result.list = []
+            return;
+        }
+        result.list = resf
+        res.send(result)
+    })
 })
-//保存数据库
-edudata.save(function(err) {
-    if (err) {
-        console.log('保存失败')
-        return;
-    }
-    console.log('meow');
-});
-router.get('/addData', function(req, res, next) {
-    res.send([{a:1,b:2},{a:1,b:2},{a:1,b:2},]);
-});
-
 module.exports = router;
