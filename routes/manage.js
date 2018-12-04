@@ -45,6 +45,7 @@ router.get('/getdataList',function (req, res, next) {
             return;
         }
         result.list = resf
+        result.total = resf.length
         res.send(result)
     })
 })

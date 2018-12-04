@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose =  require("mongoose");
 var index = require('./routes/index');
-var users = require('./routes/users');
+var common = require('./routes/common');
 var data = require('./routes/data');
 var manage = require('./routes/manage');
 
@@ -44,11 +44,17 @@ app.all('*', function(req, res, next) {
 var MongoClient = require('mongodb').MongoClient;
 var DB_CONN_STR  = "mongodb://localhost:27017/civilservant";
 // 定义函数表达式，用于操作数据库并返回结果
-mongoose.connect(DB_CONN_STR);
+mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
+    if(err) {
+        console.log('Connection Error:' + err)
+    } else {
+        console.log('Connection success!')
+    }
+});
 //====================***********连接数据库end**********=================
 //====================***********接口模块start**********=================
 app.use('/', index);
-app.use('/users', users);
+app.use('/common', common);
 app.use('/data', data);
 app.use('/manage', manage);
 //====================***********接口模块start**********=================
