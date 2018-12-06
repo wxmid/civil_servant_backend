@@ -1,12 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
+const util = require('util');
 const fs = require('fs');
 /* GET users listing. */
+let result = {
+    status: 0,
+    desc: 'success'
+}
 router.post('/uploadFile', function(req, res, next) {
-    // don't forget to delete all req.files when done
+    /*// don't forget to delete all req.files when done
     //生成multiparty对象，并配置上传目标路径
-    var form = new multiparty.Form({uploadDir: './upload/picture/'});
+    var form = new multiparty.Form({uploadDir: './public/files/img/'});
 
     //上传完成后处理
     form.parse(req, function(err, fields, files) {
@@ -21,7 +26,7 @@ router.post('/uploadFile', function(req, res, next) {
             console.log('parse files: ' + filesTmp);
             var inputFile = files.inputFile[0];
             var uploadedPath = inputFile.path;
-            var dstPath = './upload/picture/' + inputFile.originalFilename;
+            var dstPath = './public/files/img/' + inputFile.originalFilename;
             //重命名为真实文件名
             fs.rename(uploadedPath, dstPath, function(err) {
                 if(err){
@@ -35,7 +40,33 @@ router.post('/uploadFile', function(req, res, next) {
                 }
             });
         }
+    });*/
+    // 解析一个文件上传
+    var form = new multiparty.Form();
+    //设置编辑
+    form.encoding = 'utf-8';
+    //设置文件存储路径
+    form.uploadDir = "../public/files/img/";
+    //设置单文件大小限制
+    form.maxFilesSize = 2 * 1024 * 1024;
+    //form.maxFields = 1000;  设置所以文件的大小总和
+
+    form.parse(req, function(err, fields, files) {
+        if(err) {
+            result.status = 1; // 错误
+            result.desc = '上传出错'; // 错误
+        } else {
+            //同步重命名文件名
+            // fs.renameSync(files.path,files.originalFilename);
+            // res.writeHead(200, {'content-type': 'text/plain'});
+            // res.write('received upload:\n\n');
+            // res.end(util.inspect({fields: fields, files: files}));
+            result.path = files.file[0].path
+            console.log(result)
+            res.send(result);
+        }
     });
+
 });
 
 module.exports = router;
