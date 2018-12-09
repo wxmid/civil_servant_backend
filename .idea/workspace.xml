@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fd7f1c50-636e-4df7-9881-0734becd81c2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/common.js" afterPath="$PROJECT_DIR$/routes/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/manage.js" afterPath="$PROJECT_DIR$/routes/manage.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -56,8 +53,8 @@
       <file leaf-file-name="manage.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/manage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="47" column="18" lean-forward="true" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+            <state relative-caret-position="221">
+              <caret line="61" column="29" lean-forward="true" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -403,7 +400,7 @@
       <workItem from="1544025894657" duration="405000" />
       <workItem from="1544101634371" duration="10175000" />
       <workItem from="1544240360420" duration="23172000" />
-      <workItem from="1544365297815" duration="6373000" />
+      <workItem from="1544365297815" duration="6836000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1542815247726</created>
@@ -454,11 +451,18 @@
       <option name="project" value="LOCAL" />
       <updated>1544112239827</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="编辑接口">
+      <created>1544372604374</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1544372604374</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75382000" />
+    <option name="totallyTimeSpent" value="75845000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -501,7 +505,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="管理后台接口更新" />
-    <option name="LAST_COMMIT_MESSAGE" value="管理后台接口更新" />
+    <MESSAGE value="编辑接口" />
+    <option name="LAST_COMMIT_MESSAGE" value="编辑接口" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -896,8 +901,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/manage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="47" column="18" lean-forward="true" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+        <state relative-caret-position="221">
+          <caret line="61" column="29" lean-forward="true" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
