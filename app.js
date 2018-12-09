@@ -17,10 +17,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-var index = require('./routes/index');
-var common = require('./routes/common');
-var data = require('./routes/data');
-var manage = require('./routes/manage');
 // 解决跨域
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:8080");
@@ -50,10 +46,10 @@ mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
 });
 //====================***********连接数据库end**********=================
 //====================***********接口模块start**********=================
-app.use('/', index);
-app.use('/common', common);
-app.use('/data', data);
-app.use('/manage', manage);
+app.use('/', require('./routes/index'));
+app.use('/common', require('./routes/common'));
+app.use('/data', require('./routes/data'));
+app.use('/manage', require('./routes/manage'));
 //====================***********接口模块start**********=================
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

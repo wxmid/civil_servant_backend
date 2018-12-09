@@ -5,6 +5,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose    = require('mongoose')
 var Schema = mongoose.Schema;
+// 得到数据库连接句柄
+var db = mongoose.connection;
 //骨架模版
 var edudataSchema = new Schema({
     thumbnail: String,
@@ -32,10 +34,39 @@ router.post('/addData', function(req, res, next) {
             result.desc = '保存失败'
             return;
         }
-        console.log('meow');
+        res.send(result);
     });
-    res.send(result);
 });
+//更新数据
+router.post('/editData', function(req, res, next) {
+    console.log(req.body)
+    var conditions = {_id: req.body._id}
+    var update = {$set:req.body}
+    var options = {upsert : true};
+    //更新数据库
+    Edudata.updateOne(conditions, update, options,function(err,resf) {
+        if (err) {
+            result.status = 1
+            result.desc = '更新失败'
+            return;
+        }
+        res.send(result);
+        // db.close();
+    });
+});
+// 删除某条资源记录
+router.get('/deleteData',function (req, res, next) {
+    var conditions = {_id: req.body._id}
+    Edudata.remove(conditions ,function (err,resf) {
+        if (err) {
+            result.status = 1
+            result.desc = '删除失败'
+            return;
+        }
+        res.send(result)
+    })
+})
+// 获取资源列表
 router.get('/getdataList',function (req, res, next) {
     Edudata.find({},function (err,resf) {
         if (err) {
@@ -43,9 +74,10 @@ router.get('/getdataList',function (req, res, next) {
             result.desc = '保存失败'
             result.list = []
             return;
+        } else {
+            result.list = resf
+            result.total = resf.length
         }
-        result.list = resf
-        result.total = resf.length
         res.send(result)
     })
 })

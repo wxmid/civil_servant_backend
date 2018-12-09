@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
+var path = require('path');
+
 const util = require('util');
 const fs = require('fs');
 /* GET users listing. */
@@ -61,7 +63,8 @@ router.post('/uploadFile', function(req, res, next) {
             // res.writeHead(200, {'content-type': 'text/plain'});
             // res.write('received upload:\n\n');
             // res.end(util.inspect({fields: fields, files: files}));
-            result.path = files.file[0].path
+            // result.src = path.join(__dirname, files.file[0].path)
+            result.src = "http://localhost:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
             console.log(result)
             res.send(result);
         }
