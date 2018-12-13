@@ -17,13 +17,13 @@ var edudataSchema = new Schema({
     onOff: Boolean,
     description: String
 })
-let result = {
-    status: 0,
-    desc: 'success'
-}
 //模型
 var Edudata = mongoose.model('edudata', edudataSchema);
 router.post('/addData', function(req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
     //存储数据
     console.log(req.body)
     var edudata = new Edudata(req.body)
@@ -39,6 +39,10 @@ router.post('/addData', function(req, res, next) {
 });
 //更新数据
 router.post('/editData', function(req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
     console.log(req.body)
     var conditions = {_id: req.body._id}
     var update = {$set:req.body}
@@ -56,6 +60,10 @@ router.post('/editData', function(req, res, next) {
 });
 // 删除某条资源记录
 router.get('/deleteData',function (req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
     var conditions = {_id: req.body._id}
     Edudata.remove(conditions ,function (err,resf) {
         if (err) {
@@ -68,6 +76,10 @@ router.get('/deleteData',function (req, res, next) {
 })
 // 获取资源列表
 router.get('/getdataList',function (req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
     Edudata.find({},function (err,resf) {
         if (err) {
             result.status = 1

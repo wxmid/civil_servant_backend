@@ -6,11 +6,11 @@ var path = require('path');
 const util = require('util');
 const fs = require('fs');
 /* GET users listing. */
-let result = {
-    status: 0,
-    desc: 'success'
-}
 router.post('/uploadFile', function(req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
     /*// don't forget to delete all req.files when done
     //生成multiparty对象，并配置上传目标路径
     var form = new multiparty.Form({uploadDir: './public/files/img/'});
