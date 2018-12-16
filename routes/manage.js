@@ -91,21 +91,24 @@ router.get('/getdataList',function (req, res, next) {
         status: 0,
         desc: 'success'
     }
-    Edudata.find({}).limit(req.query.pageSize).skip((req.query.pageSize - 1) * req.query.pageNo).exec(function (err,resf) {
-        if (err) {
-            result.status = 1
-            result.desc = '保存失败'
-            result.list = []
-            return;
-        } else {
-            result.list = resf
-            result.total = resf.length
-        }
-        /*res.writeHead(
-         200,
-         {'content-type': 'text/html'}
-         )*/
-        res.send(result)
+    let reg = new RegExp(req.query.title, 'i') //不区分大小写
+    Edudata.count({title:{$regex: reg}},function (err, count) {
+        Edudata.find({title:{$regex: reg}}).limit(Number(req.query.pageSize)).skip((Number(req.query.pageNo) - 1) * req.query.pageSize).sort({"createdAt": -1}).exec(function (err,resf) {
+            if (err) {
+                result.status = 1
+                result.desc = '保存失败'
+                result.list = []
+                return;
+            } else {
+                result.list = resf
+                result.total = count
+            }
+            /*res.writeHead(
+             200,
+             {'content-type': 'text/html'}
+             )*/
+            res.send(result)
+        })
     })
 })
 module.exports = router;
