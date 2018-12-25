@@ -4,30 +4,7 @@
 var express = require('express');
 var url = require('url');
 var router = express.Router();
-var mongoose    = require('mongoose')
-var Schema = mongoose.Schema;
-// 得到数据库连接句柄
-var db = mongoose.connection;
-//骨架模版
-var edudataSchema = new Schema({
-    thumbnail: String,
-    imgList: Array,
-    title: String,
-    price: Number,
-    browseCount: Number,
-    onOff: Boolean,
-    description: String,
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now()
-    }
-})
-//模型
-var Edudata = mongoose.model('edudata', edudataSchema);
+var Edudata = require('../models/Edudata'); // 集合。。。
 router.post('/addData', function(req, res, next) {
     let result = {
         status: 0,
@@ -92,8 +69,8 @@ router.get('/getdataList',function (req, res, next) {
         desc: 'success'
     }
     let reg = new RegExp(req.query.title, 'i') //不区分大小写
-    Edudata.count({title:{$regex: reg}},function (err, count) {
-        Edudata.find({title:{$regex: reg}}).limit(Number(req.query.pageSize)).skip((Number(req.query.pageNo) - 1) * req.query.pageSize).sort({"createdAt": -1}).exec(function (err,resf) {
+    Edudata.countDocuments({title:{$regex: reg}},function (err, count) {
+        Edudata.find({title:{$regex: reg}}).limit(Number(req.query.pageSize)).skip((Number(req.query.pageNo) - 1) * req.query.pageSize).sort({createdAt: -1}).exec(function (err,resf) {
             if (err) {
                 result.status = 1
                 result.desc = '保存失败'
