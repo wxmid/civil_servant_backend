@@ -4,7 +4,7 @@
 var express = require('express');
 var url = require('url');
 var router = express.Router();
-var Edudata = require('../models/Edudata'); // 集合。。。
+var Edudata = require('../models/Edudata'); //集合 引入。。。
 router.post('/addData', function(req, res, next) {
     let result = {
         status: 0,

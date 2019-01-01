@@ -14,6 +14,8 @@ var edudataSchema = new Schema({
     browseCount: Number,
     onOff: Boolean,
     description: String,
+    url: String, // ‘∆≈Ã¡¥Ω”
+    extCode: String, // Ã·»°¬Î
     class1: Number,
     class2: Number,
     class3: Number,
