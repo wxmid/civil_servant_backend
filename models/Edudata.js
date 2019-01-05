@@ -7,18 +7,54 @@ var Schema = mongoose.Schema;
 var db = mongoose.connection;
 //骨架模版
 var edudataSchema = new Schema({
-    thumbnail: String,
-    imgList: Array,
-    title: String,
-    price: Number,
-    browseCount: Number,
-    onOff: Boolean,
-    description: String,
-    url: String, // 云盘链接
-    extCode: String, // 提取码
-    class1: Number,
-    class2: Number,
-    class3: Number,
+    thumbnail: {
+        type: String,
+        default: ''
+    },
+    imgList: {
+        type: Array,
+        default: []
+    },
+    title: {
+        type: String,
+        default: ''
+    },
+    price: {
+        type: Number,
+        default: 0
+    },
+    browseCount: {
+        type: Number,
+        default: 0
+    },
+    onOff: {
+        type: Boolean,
+        default: false
+    },
+    description: {
+        type: String,
+        default: ''
+    },
+    url: {
+        type: String,
+        default: ''
+    }, // 云盘链接
+    extCode: {
+        type: String,
+        default: ''
+    }, // 提取码
+    class1: {
+        type: Number,
+        default: null
+    },
+    class2: {
+        type: Number,
+        default: null
+    },
+    class3: {
+        type: Number,
+        default: null
+    },
     createdAt: {
         type: Date,
         default: Date.now()

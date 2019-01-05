@@ -49,6 +49,7 @@ mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
 app.use('/', require('./routes/index'));
 app.use('/common', require('./routes/common'));
 app.use('/data', require('./routes/data'));
+app.use('/user', require('./routes/user'));
 app.use('/manage', require('./routes/manage'));
 //====================***********½Ó¿ÚÄ£¿éstart**********=================
 // catch 404 and forward to error handler
