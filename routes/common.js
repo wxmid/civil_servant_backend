@@ -71,5 +71,17 @@ router.post('/uploadFile', function(req, res, next) {
     });
 
 });
-
+// 操作session
+router.get('/getSession', function(req, res, next) {
+    const session = req.session;
+    if (!session.num) {
+        session.num = 0;
+    }
+    if (session.user) {
+        let name = session.name;
+        res.send(name + "第" + ++session.num + "次登录");
+    } else {
+        res.send("还没有登录");
+    }
+})
 module.exports = router;

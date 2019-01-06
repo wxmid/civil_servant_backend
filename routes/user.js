@@ -43,16 +43,28 @@ router.get('/login',function (req, res, next) {
         desc: 'success'
     }
     User.findOne({phone: req.query.loginPhone,password:req.query.loginPassword},function (err,resf) {
-        if (err) {
+        if (err || !resf) {
             result.status = 1
             result.desc = '用户名或密码不正确'
-            return;
         } else {
             result.phone = resf.phone
             result.openid = resf.openid
             result.avatar = resf.avatar
+            req.app.locals['userinfo'] = username; // session 保存用户登陆状态
         }
         res.send(result)
     })
 })
+// 登出
+router.all('/logout',function (req,res,next) {
+    //销毁session
+    req.session.destroy(function(err){
+        if(err){
+            console.log(err);
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+});
 module.exports = router;
