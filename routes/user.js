@@ -50,7 +50,16 @@ router.get('/login',function (req, res, next) {
             result.phone = resf.phone
             result.openid = resf.openid
             result.avatar = resf.avatar
-            req.app.locals['userinfo'] = username; // session 保存用户登陆状态
+            res.cookie('_M_Sessin', 'phone=' + resf.phone +  '&openid=' + resf.openid, {
+                maxAge:7*24*60*60*1000, path:'/', httpOnly:true
+            });
+            /*var today = new Date();
+            var time = today.getTime() + 60*1000;
+            var time2 = new Date(time);
+            var timeObj = time2.toGMTString();
+            response.writeHead({
+                'Set-Cookie':'myCookie="type=ninja", "language=javascript";path="/";Expires='+timeObj+';httpOnly=true'
+            });*/
         }
         res.send(result)
     })
