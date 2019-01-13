@@ -37,12 +37,12 @@ router.post('/register', function(req, res, next) {
     });
 });
 // 用户登录
-router.get('/login',function (req, res, next) {
+router.post('/login',function (req, res, next) {
     let result = {
         status: 0,
         desc: 'success'
     }
-    User.findOne({phone: req.query.loginPhone,password:req.query.loginPassword},function (err,resf) {
+    User.findOne({phone: req.body.loginPhone,password:req.body.loginPassword},function (err,resf) {
         if (err || !resf) {
             result.status = 1
             result.desc = '用户名或密码不正确'
@@ -50,17 +50,24 @@ router.get('/login',function (req, res, next) {
             result.phone = resf.phone
             result.openid = resf.openid
             result.avatar = resf.avatar
-            res.cookie('_M_Sessin', 'phone=' + resf.phone +  '&openid=' + resf.openid, {
-                maxAge:7*24*60*60*1000, path:'/', httpOnly:true
+            //将密匙字符串赋值给req.secret,可以省略，在上面cookieparser()时会自动对secret赋值
+            // req.secret= signStr;
+            res.cookie('_M_Session','phone=' + resf.phone + '&openid=' + resf.openid, {
+                signed: true,
+                maxAge: 7*24*60*60*1000,
+                path:'/',
+                httpOnly:false
             });
-            /*var today = new Date();
-            var time = today.getTime() + 60*1000;
-            var time2 = new Date(time);
-            var timeObj = time2.toGMTString();
-            response.writeHead({
-                'Set-Cookie':'myCookie="type=ninja", "language=javascript";path="/";Expires='+timeObj+';httpOnly=true'
-            });*/
+            req.session.userInfo = {
+                phone: resf.phone,
+                openid: resf.openid,
+                avatar: resf.avatar
+            }
         }
+        console.log('带签名',JSON.stringify(req.signedCookies));
+        console.log('不带签名',JSON.stringify(req.cookies));
+        console.log('不带签名1:' + JSON.stringify(req.session))
+
         res.send(result)
     })
 })
@@ -69,8 +76,9 @@ router.all('/logout',function (req,res,next) {
     //销毁session
     req.session.destroy(function(err){
         if(err){
-            console.log(err);
+            throw err;
         }else{
+            res.clearCookie('_M_Session');
             res.redirect('/login');
         }
     })

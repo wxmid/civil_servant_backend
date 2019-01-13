@@ -4,14 +4,18 @@
 var express = require('express');
 var url = require('url');
 var router = express.Router();
-var Edudata = require('../models/Edudata'); // ¼¯ºÏ¡£¡£¡£
-// »ñÈ¡×ÊÔ´ÁĞ±í
+var Edudata = require('../models/Edudata'); // é›†åˆã€‚ã€‚ã€‚
+// è·å–èµ„æºåˆ—è¡¨
 router.post('/getdataList',function (req, res, next) {
+    console.log('å¸¦ç­¾å',JSON.stringify(req.signedCookies));
+    console.log('ä¸å¸¦ç­¾å',JSON.stringify(req.cookies));
+    console.log('å¸¦ç­¾å1:' + JSON.stringify(req.session))
+    console.log('å¸¦ç­¾åsessionId:' + req.session.id)
     let result = {
         status: 0,
         desc: 'success'
     }
-    let reg = new RegExp(req.body.title, 'i') //²»Çø·Ö´óĞ¡Ğ´
+    let reg = new RegExp(req.body.title, 'i') //ä¸åŒºåˆ†å¤§å°å†™
     let class1 = req.body.class1
     let class2 = req.body.class2
     let class3 = req.body.class3
@@ -23,7 +27,7 @@ router.post('/getdataList',function (req, res, next) {
         Edudata.find(params).limit(Number(req.body.pageSize)).skip((Number(req.body.pageNo) - 1) * req.body.pageSize).sort({createdAt: -1}).exec(function (err,resf) {
             if (err) {
                 result.status = 1
-                result.desc = '±£´æÊ§°Ü'
+                result.desc = 'ä¿å­˜å¤±è´¥'
                 result.list = []
                 return;
             } else {
@@ -34,7 +38,7 @@ router.post('/getdataList',function (req, res, next) {
         })
     })
 })
-// ¸ù¾İid»ñÈ¡×ÊÁÏÏêÇé
+// æ ¹æ®idè·å–èµ„æ–™è¯¦æƒ…
 router.get('/getdataDetail',function (req, res, next) {
     let result = {
         status: 0,
@@ -43,7 +47,7 @@ router.get('/getdataDetail',function (req, res, next) {
     Edudata.findOne({_id: req.query._id},function (err,resf) {
         if (err) {
             result.status = 1
-            result.desc = 'ÍøÂç¿ªĞ¡²îÀ²...'
+            result.desc = 'ç½‘ç»œå¼€å°å·®å•¦...'
             return;
         } else {
             result.data = resf

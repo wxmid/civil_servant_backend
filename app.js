@@ -3,6 +3,8 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+//随机生成的字符串
+var signStr = 'wuxiaoming123123'
 var bodyParser = require('body-parser');
 var mongoose =  require("mongoose");
 var session = require("express-session")
@@ -15,19 +17,21 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(cookieParser()); // 无签名cookie
+app.use(cookieParser(signStr)); // 有签名cookie
 // session
 app.use(session({
-    secret: 'wuxiaoming123123',
-    name: 'mindwin',
+    secret: signStr,//相当于一个加密密钥，值可以是任意字符串
+    name: '_M_Session',
     cookie: {maxAge: 30*24*60*60*1000}, // 30天
-    resave: true,
-    saveUninitialized: false
+    resave: false,//强制session保存到session store中   是指每次请求都重新设置session cookie
+    saveUninitialized: false //强制没有‘初始化’的session保存到storage中
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 // 解决跨域
 app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+    res.header("Access-Control-Allow-Origin", "http://192.168.56.1:8080");
+    res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By", ' 3.2.1')

@@ -4,26 +4,26 @@
 var express = require('express');
 var url = require('url');
 var router = express.Router();
-var Edudata = require('../models/Edudata'); //¼¯ºÏ ÒıÈë¡£¡£¡£
+var Edudata = require('../models/Edudata'); //é›†åˆ å¼•å…¥ã€‚ã€‚ã€‚
 router.post('/addData', function(req, res, next) {
     let result = {
         status: 0,
         desc: 'success'
     }
-    //´æ´¢Êı¾İ
+    //å­˜å‚¨æ•°æ®
     console.log(req.body)
     var edudata = new Edudata(req.body)
-    //±£´æÊı¾İ¿â
+    //ä¿å­˜æ•°æ®åº“
     edudata.save(function(err) {
         if (err) {
             result.status = 1
-            result.desc = '±£´æÊ§°Ü'
+            result.desc = 'ä¿å­˜å¤±è´¥'
             return;
         }
         res.send(result);
     });
 });
-//¸üĞÂÊı¾İ
+//æ›´æ–°æ•°æ®
 router.post('/editData', function(req, res, next) {
     let result = {
         status: 0,
@@ -34,18 +34,18 @@ router.post('/editData', function(req, res, next) {
     var update = {$set:req.body}
     update.updatedAt = Date.now()
     var options = {upsert : true};
-    //¸üĞÂÊı¾İ¿â
+    //æ›´æ–°æ•°æ®åº“
     Edudata.updateOne(conditions, update, options,function(err,resf) {
         if (err) {
             result.status = 1
-            result.desc = '¸üĞÂÊ§°Ü'
+            result.desc = 'æ›´æ–°å¤±è´¥'
             return;
         }
         res.send(result);
         // db.close();
     });
 });
-// É¾³ıÄ³Ìõ×ÊÔ´¼ÇÂ¼
+// åˆ é™¤æŸæ¡èµ„æºè®°å½•
 router.delete('/deleteData',function (req, res, next) {
     let result = {
         status: 0,
@@ -55,25 +55,27 @@ router.delete('/deleteData',function (req, res, next) {
     Edudata.remove(conditions ,function (err,resf) {
         if (err) {
             result.status = 1
-            result.desc = 'É¾³ıÊ§°Ü'
+            result.desc = 'åˆ é™¤å¤±è´¥'
             return;
         }
         res.writeHead(200,{'Content-Type':'text/html;charset=UTF8'});
         res.end(JSON.stringify(result))
     })
 })
-// »ñÈ¡×ÊÔ´ÁĞ±í
+// è·å–èµ„æºåˆ—è¡¨
 router.get('/getdataList',function (req, res, next) {
+    console.log('å¸¦ç­¾å',req.signedCookies);
+
     let result = {
         status: 0,
         desc: 'success'
     }
-    let reg = new RegExp(req.query.title, 'i') //²»Çø·Ö´óĞ¡Ğ´
+    let reg = new RegExp(req.query.title, 'i') //ä¸åŒºåˆ†å¤§å°å†™
     Edudata.countDocuments({title:{$regex: reg}},function (err, count) {
         Edudata.find({title:{$regex: reg}}).limit(Number(req.query.pageSize)).skip((Number(req.query.pageNo) - 1) * req.query.pageSize).sort({createdAt: -1}).exec(function (err,resf) {
             if (err) {
                 result.status = 1
-                result.desc = '±£´æÊ§°Ü'
+                result.desc = 'ä¿å­˜å¤±è´¥'
                 result.list = []
                 return;
             } else {
