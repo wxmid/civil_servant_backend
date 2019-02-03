@@ -47,7 +47,9 @@ app.all('*', function(req, res, next) {
 //====================***********连接数据库start**********=================
 // 引入mongodb模块，获得客户端对象
 var MongoClient = require('mongodb').MongoClient;
-var DB_CONN_STR  = "mongodb://localhost:27017/civilservant";
+// var DB_CONN_STR  = "mongodb://localhost:27017/civilservant"; // 本地
+var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // 线上IP
+// var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // 线上
 // 定义函数表达式，用于操作数据库并返回结果
 mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
     if(err) {

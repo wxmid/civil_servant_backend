@@ -84,4 +84,10 @@ router.get('/getSession', function(req, res, next) {
         res.send("还没有登录");
     }
 })
+// 测试请求
+router.get('/getdirect', function(req, res, next) {
+    res.send({
+        data: ["'aa'",'bb','cc']
+    });
+})
 module.exports = router;
