@@ -30,7 +30,8 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 // 解决跨域
 app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://192.168.56.1:8080");
+    // res.header("Access-Control-Allow-Origin", "http://192.168.56.1:8080");
+    res.header("Access-Control-Allow-Origin", "http://www.mindwen.com" || "http://192.168.56.1:8080");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -48,8 +49,8 @@ app.all('*', function(req, res, next) {
 // 引入mongodb模块，获得客户端对象
 var MongoClient = require('mongodb').MongoClient;
 // var DB_CONN_STR  = "mongodb://localhost:27017/civilservant"; // 本地
-var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // 线上IP
-// var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // 线上
+// var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // 线上IP
+var DB_CONN_STR  = "mongodb://www.mindwen.com:27017/civilservant"; // 线上
 // 定义函数表达式，用于操作数据库并返回结果
 mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
     if(err) {
