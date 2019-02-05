@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ½â¾ö¿çÓò
 app.all('*', function(req, res, next) {
     // res.header("Access-Control-Allow-Origin", "http://192.168.56.1:8080");
-    res.header("Access-Control-Allow-Origin", "http://www.mindwen.com" || "http://192.168.56.1:8080");
+    res.header("Access-Control-Allow-Origin", "http://www.mindwen.com");
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");

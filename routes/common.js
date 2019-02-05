@@ -65,6 +65,7 @@ router.post('/uploadFile', function(req, res, next) {
             // res.end(util.inspect({fields: fields, files: files}));
             // result.src = path.join(__dirname, files.file[0].path)
             result.src = "http://localhost:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
+            // result.src = "http://www.mindwen.com:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
             console.log(result)
             res.send(result);
         }
