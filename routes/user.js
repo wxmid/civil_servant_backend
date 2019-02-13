@@ -71,6 +71,42 @@ router.post('/login',function (req, res, next) {
         res.send(result)
     })
 })
+// 用户qq登录
+router.post('/qqlogin',function (req, res, next) {
+    let result = {
+        status: 0,
+        desc: 'success'
+    }
+    User.findOne({phone: req.body.loginPhone,password:req.body.loginPassword},function (err,resf) {
+        if (err || !resf) {
+            result.status = 1
+            result.desc = '用户名或密码不正确'
+        } else {
+            result.phone = resf.phone
+            result.openid = resf.openid
+            result.avatar = resf.avatar
+            //将密匙字符串赋值给req.secret,可以省略，在上面cookieparser()时会自动对secret赋值
+            // req.secret= signStr;
+            res.cookie('_M_Session','phone=' + resf.phone + '&openid=' + resf.openid, {
+                signed: true,
+                maxAge: 7*24*60*60*1000,
+                path:'/',
+                httpOnly:false
+            });
+            req.session.userInfo = {
+                phone: resf.phone,
+                openid: resf.openid,
+                avatar: resf.avatar
+            }
+        }
+        console.log('带签名',JSON.stringify(req.signedCookies));
+        console.log('不带签名',JSON.stringify(req.cookies));
+        console.log('不带签名1:' + JSON.stringify(req.session))
+
+        // res.send(result)
+        res.send('http://www.mindwen.com')
+    })
+})
 // 登出
 router.all('/logout',function (req,res,next) {
     //销毁session

@@ -3,15 +3,15 @@
  */
 var mongoose    = require('mongoose')
 var Schema = mongoose.Schema;
-// µÃµ½Êı¾İ¿âÁ¬½Ó¾ä±ú
+// å¾—åˆ°æ•°æ®åº“è¿æ¥å¥æŸ„
 var db = mongoose.connection;
-//¹Ç¼ÜÄ£°æ
+//éª¨æ¶æ¨¡ç‰ˆ
 var userSchema = new Schema({
-    userName: { // ÓÃ»§Ãû
+    userName: { // ç”¨æˆ·å
         type: String,
         default: ''
     },
-    openid: { // ÊÇÓÃ»§QQµÇÂ¼´ËÍøÕ¾ÉÏÎ¨Ò»¶ÔÓ¦ÓÃ»§Éí·İµÄ±êÊ¶
+    openid: { // æ˜¯ç”¨æˆ·QQç™»å½•æ­¤ç½‘ç«™ä¸Šå”¯ä¸€å¯¹åº”ç”¨æˆ·èº«ä»½çš„æ ‡è¯†
         type: String,
         default: ''
     },
@@ -26,16 +26,16 @@ var userSchema = new Schema({
     avatar: {
         type: String,
         default: '',
-    }, // Í·Ïñ
+    }, // å¤´åƒ
     status: {
         type: Number,
         default: 0
-    }, // ×¢²á×´Ì¬ 0ÆÕÍ¨×¢²á£¬1»áÔ±ÆÚÄÚ,2»áÔ±ÒÑ¹ıÆÚ£¬3»áÔ±ÒÑ×¢Ïú£¨Ö÷¶¯×¢Ïú»òÎ¥·´ÍøÕ¾¹æÔò±»×¢Ïú£©
-    purchaseTime: { // »áÔ±¹ºÂòÊ±¼ä
+    }, // æ³¨å†ŒçŠ¶æ€ 0æ™®é€šæ³¨å†Œï¼Œ1ä¼šå‘˜æœŸå†…,2ä¼šå‘˜å·²è¿‡æœŸï¼Œ3ä¼šå‘˜å·²æ³¨é”€ï¼ˆä¸»åŠ¨æ³¨é”€æˆ–è¿åç½‘ç«™è§„åˆ™è¢«æ³¨é”€ï¼‰
+    purchaseTime: { // ä¼šå‘˜è´­ä¹°æ—¶é—´
         type: Date,
         default: null
     },
-    deadline: { // »áÔ±¹ıÆÚÊ±¼ä
+    deadline: { // ä¼šå‘˜è¿‡æœŸæ—¶é—´
         type: Date,
         default: null
     },
@@ -48,6 +48,6 @@ var userSchema = new Schema({
         default: Date.now()
     }
 })
-//Ä£ĞÍ
+//æ¨¡å‹
 var User = mongoose.model('user', userSchema);
 module.exports = User;

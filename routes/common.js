@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 var path = require('path');
-
+var config = require('../config.js') // é…ç½®æ–‡ä»¶
 const util = require('util');
 const fs = require('fs');
 /* GET users listing. */
@@ -11,68 +11,36 @@ router.post('/uploadFile', function(req, res, next) {
         status: 0,
         desc: 'success'
     }
-    /*// don't forget to delete all req.files when done
-    //Éú³Émultiparty¶ÔÏó£¬²¢ÅäÖÃÉÏ´«Ä¿±êÂ·¾¶
-    var form = new multiparty.Form({uploadDir: './public/files/img/'});
-
-    //ÉÏ´«Íê³Éºó´¦Àí
-    form.parse(req, function(err, fields, files) {
-        var obj ={};
-
-        var filesTmp = JSON.stringify(files,null,2);
-        if(err){
-            console.log('parse error: ' + err);
-        }
-        else {
-
-            console.log('parse files: ' + filesTmp);
-            var inputFile = files.inputFile[0];
-            var uploadedPath = inputFile.path;
-            var dstPath = './public/files/img/' + inputFile.originalFilename;
-            //ÖØÃüÃûÎªÕæÊµÎÄ¼şÃû
-            fs.rename(uploadedPath, dstPath, function(err) {
-                if(err){
-                    console.log('rename error: ' + err);
-                    res.writeHead(200, {'content-type': 'text/plain;charset=utf-8'});
-                    res.end("{'status':200, 'message': 'ÉÏ´«Ê§°Ü£¡'}");
-                } else {
-                    console.log('rename ok');
-                    res.writeHead(200, {'content-type': 'text/plain;charset=utf-8'});
-                    res.end("{'status':400, 'message': 'ÉÏ´«³É¹¦£¡'}");
-                }
-            });
-        }
-    });*/
-    // ½âÎöÒ»¸öÎÄ¼şÉÏ´«
+    // è§£æä¸€ä¸ªæ–‡ä»¶ä¸Šä¼ 
     var form = new multiparty.Form();
-    //ÉèÖÃ±à¼­
+    //è®¾ç½®ç¼–è¾‘
     form.encoding = 'utf-8';
-    //ÉèÖÃÎÄ¼ş´æ´¢Â·¾¶
-    form.uploadDir = "../public/files/img/";
-    //ÉèÖÃµ¥ÎÄ¼ş´óĞ¡ÏŞÖÆ
+    //è®¾ç½®æ–‡ä»¶å­˜å‚¨è·¯å¾„
+    form.uploadDir = config.uploadDir;
+    //è®¾ç½®å•æ–‡ä»¶å¤§å°é™åˆ¶
     form.maxFilesSize = 2 * 1024 * 1024;
-    //form.maxFields = 1000;  ÉèÖÃËùÒÔÎÄ¼şµÄ´óĞ¡×ÜºÍ
+    //form.maxFields = 1000;  è®¾ç½®æ‰€ä»¥æ–‡ä»¶çš„å¤§å°æ€»å’Œ
 
     form.parse(req, function(err, fields, files) {
         if(err) {
-            result.status = 1; // ´íÎó
-            result.desc = 'ÉÏ´«³ö´í'; // ´íÎó
+            result.status = 1; // é”™è¯¯
+            result.desc = 'ä¸Šä¼ å‡ºé”™'; // é”™è¯¯
         } else {
-            //Í¬²½ÖØÃüÃûÎÄ¼şÃû
+            //åŒæ­¥é‡å‘½åæ–‡ä»¶å
             // fs.renameSync(files.path,files.originalFilename);
             // res.writeHead(200, {'content-type': 'text/plain'});
             // res.write('received upload:\n\n');
             // res.end(util.inspect({fields: fields, files: files}));
             // result.src = path.join(__dirname, files.file[0].path)
-            result.src = "http://localhost:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
-            // result.src = "http://www.mindwen.com:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
+            // result.src = "http://localhost:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
+            result.src = "http://www.mindwen.com:3000" +  path.join('/', files.file[0].path).replace(/\\/g,'/').replace(/public\//,'');
             console.log(result)
             res.send(result);
         }
     });
 
 });
-// ²Ù×÷session
+// æ“ä½œsession
 router.get('/getSession', function(req, res, next) {
     const session = req.session;
     if (!session.num) {
@@ -80,12 +48,12 @@ router.get('/getSession', function(req, res, next) {
     }
     if (session.user) {
         let name = session.name;
-        res.send(name + "µÚ" + ++session.num + "´ÎµÇÂ¼");
+        res.send(name + "ç¬¬" + ++session.num + "æ¬¡ç™»å½•");
     } else {
-        res.send("»¹Ã»ÓĞµÇÂ¼");
+        res.send("è¿˜æ²¡æœ‰ç™»å½•");
     }
 })
-// ²âÊÔÇëÇó
+// æµ‹è¯•è¯·æ±‚
 router.get('/getdirect', function(req, res, next) {
     res.send({
         data: ["'aa'",'bb','cc']

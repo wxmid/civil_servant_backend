@@ -3,9 +3,9 @@
  */
 var mongoose    = require('mongoose')
 var Schema = mongoose.Schema;
-// µÃµ½Êı¾İ¿âÁ¬½Ó¾ä±ú
+// å¾—åˆ°æ•°æ®åº“è¿æ¥å¥æŸ„
 var db = mongoose.connection;
-//¹Ç¼ÜÄ£°æ
+//éª¨æ¶æ¨¡ç‰ˆ
 var edudataSchema = new Schema({
     thumbnail: {
         type: String,
@@ -38,11 +38,11 @@ var edudataSchema = new Schema({
     url: {
         type: String,
         default: ''
-    }, // ÔÆÅÌÁ´½Ó
+    }, // äº‘ç›˜é“¾æ¥
     extCode: {
         type: String,
         default: ''
-    }, // ÌáÈ¡Âë
+    }, // æå–ç 
     class1: {
         type: Number,
         default: null
@@ -64,6 +64,6 @@ var edudataSchema = new Schema({
         default: Date.now()
     }
 })
-//Ä£ĞÍ
+//æ¨¡å‹
 var Edudata = mongoose.model('edudata', edudataSchema);
 module.exports = Edudata;

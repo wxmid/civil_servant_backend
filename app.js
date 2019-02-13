@@ -3,7 +3,8 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-//Ëæ»úÉú³ÉµÄ×Ö·û´®
+var config = require('./config.js') // é…ç½®æ–‡ä»¶
+//éšæœºç”Ÿæˆçš„å­—ç¬¦ä¸²
 var signStr = 'wuxiaoming123123'
 var bodyParser = require('body-parser');
 var mongoose =  require("mongoose");
@@ -17,41 +18,38 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser()); // ÎŞÇ©Ãûcookie
-app.use(cookieParser(signStr)); // ÓĞÇ©Ãûcookie
+// app.use(cookieParser()); // æ— ç­¾åcookie
+app.use(cookieParser(signStr)); // æœ‰ç­¾åcookie
 // session
 app.use(session({
-    secret: signStr,//Ïàµ±ÓÚÒ»¸ö¼ÓÃÜÃÜÔ¿£¬Öµ¿ÉÒÔÊÇÈÎÒâ×Ö·û´®
+    secret: signStr,//ç›¸å½“äºä¸€ä¸ªåŠ å¯†å¯†é’¥ï¼Œå€¼å¯ä»¥æ˜¯ä»»æ„å­—ç¬¦ä¸²
     name: '_M_Session',
-    cookie: {maxAge: 30*24*60*60*1000}, // 30Ìì
-    resave: false,//Ç¿ÖÆsession±£´æµ½session storeÖĞ   ÊÇÖ¸Ã¿´ÎÇëÇó¶¼ÖØĞÂÉèÖÃsession cookie
-    saveUninitialized: false //Ç¿ÖÆÃ»ÓĞ¡®³õÊ¼»¯¡¯µÄsession±£´æµ½storageÖĞ
+    cookie: {maxAge: 30*24*60*60*1000}, // 30å¤©
+    resave: false,//å¼ºåˆ¶sessionä¿å­˜åˆ°session storeä¸­   æ˜¯æŒ‡æ¯æ¬¡è¯·æ±‚éƒ½é‡æ–°è®¾ç½®session cookie
+    saveUninitialized: false //å¼ºåˆ¶æ²¡æœ‰â€˜åˆå§‹åŒ–â€™çš„sessionä¿å­˜åˆ°storageä¸­
 }))
 app.use(express.static(path.join(__dirname, 'public')));
-// ½â¾ö¿çÓò
+// è§£å†³è·¨åŸŸ
 app.all('*', function(req, res, next) {
-    // res.header("Access-Control-Allow-Origin", "http://192.168.56.1:8080");
-    res.header("Access-Control-Allow-Origin", "http://www.mindwen.com");
+    res.header("Access-Control-Allow-Origin", config.accessAllow);
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By", ' 3.2.1')
-    //Õâ¶Î½ö½öÎªÁË·½±ã·µ»Øjson¶øÒÑ
+    //è¿™æ®µä»…ä»…ä¸ºäº†æ–¹ä¾¿è¿”å›jsonè€Œå·²
     res.header("Content-Type", "application/json;charset=utf-8");
     if(req.method == 'OPTIONS') {
-        //ÈÃoptionsÇëÇó¿ìËÙ·µ»Ø
+        //è®©optionsè¯·æ±‚å¿«é€Ÿè¿”å›
         res.sendStatus(200);
     } else {
         next();
     }
 });
-//====================***********Á¬½ÓÊı¾İ¿âstart**********=================
-// ÒıÈëmongodbÄ£¿é£¬»ñµÃ¿Í»§¶Ë¶ÔÏó
+//====================***********è¿æ¥æ•°æ®åº“start**********=================
+// å¼•å…¥mongodbæ¨¡å—ï¼Œè·å¾—å®¢æˆ·ç«¯å¯¹è±¡
 var MongoClient = require('mongodb').MongoClient;
-// var DB_CONN_STR  = "mongodb://localhost:27017/civilservant"; // ±¾µØ
-// var DB_CONN_STR  = "mongodb://101.132.164.38:27017/civilservant"; // ÏßÉÏIP
-var DB_CONN_STR  = "mongodb://www.mindwen.com:27017/civilservant"; // ÏßÉÏ
-// ¶¨Òåº¯Êı±í´ïÊ½£¬ÓÃÓÚ²Ù×÷Êı¾İ¿â²¢·µ»Ø½á¹û
+var DB_CONN_STR  = config.mongodbconn;
+// å®šä¹‰å‡½æ•°è¡¨è¾¾å¼ï¼Œç”¨äºæ“ä½œæ•°æ®åº“å¹¶è¿”å›ç»“æœ
 mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
     if(err) {
         console.log('Connection Error:' + err)
@@ -59,29 +57,29 @@ mongoose.connect(DB_CONN_STR,{useNewUrlParser:true},function (err) {
         console.log('Connection success!')
     }
 });
-//====================***********Á¬½ÓÊı¾İ¿âend**********=================
-//====================***********½Ó¿ÚÄ£¿éstart**********=================
+//====================***********è¿æ¥æ•°æ®åº“end**********=================
+//====================***********æ¥å£æ¨¡å—start**********=================
 app.use('/', require('./routes/index'));
 app.use('/common', require('./routes/common'));
 app.use('/data', require('./routes/data'));
 app.use('/user', require('./routes/user'));
 app.use('/manage', require('./routes/manage'));
-//====================***********½Ó¿ÚÄ£¿éstart**********=================
+//====================***********æ¥å£æ¨¡å—start**********=================
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 module.exports = app;

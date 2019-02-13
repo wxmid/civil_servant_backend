@@ -3,6 +3,11 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/../CivilServant/src/common/js/verification.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../CivilServant/src/components/UserList/UserList.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/models/Edudata.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/models/user.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/routes/common.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/data.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/manage.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/routes/user.js" charset="UTF-8" />
