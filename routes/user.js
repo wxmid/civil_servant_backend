@@ -72,12 +72,17 @@ router.post('/login',function (req, res, next) {
     })
 })
 // 用户qq登录
-router.post('/qqlogin',function (req, res, next) {
+router.get('/qqlogin',function (req, res, next) {
     let result = {
         status: 0,
         desc: 'success'
     }
-    User.findOne({phone: req.body.loginPhone,password:req.body.loginPassword},function (err,resf) {
+    console.log(req.query.access_token);
+    console.log(req.query.expires_in);
+    console.log(req.query);
+    console.log(req);
+    res.render(result)
+    /*User.findOne({phone: req.body.loginPhone,password:req.body.loginPassword},function (err,resf) {
         if (err || !resf) {
             result.status = 1
             result.desc = '用户名或密码不正确'
@@ -105,7 +110,7 @@ router.post('/qqlogin',function (req, res, next) {
 
         // res.send(result)
         res.send('http://www.mindwen.com')
-    })
+    })*/
 })
 // 登出
 router.all('/logout',function (req,res,next) {
