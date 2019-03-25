@@ -6,6 +6,7 @@ var url = require('url');
 var request = require('request'); // nodejs使用request发送http请求
 var router = express.Router();
 var User = require('../models/user'); // 集合。。。
+var userUtil = require('../common/userUtil');
 // 新用户注册
 router.post('/register', function(req, res, next) {
     let result = {
@@ -73,60 +74,49 @@ router.post('/login',function (req, res, next) {
     })
 })
 // 用户qq登录
-router.get('/qqlogin',function (req, res, next) {
+router.post('/qqLogin',function (req, res, next) {
+    console.log('======================111111111111111=============')
     let result = {
         status: 0,
-        desc: 'success'
+        desc: '登陆成功！'
     }
-    let access_token = req.query.access_token
-    let expires_in = req.query.expires_in
-    // access_token 换区openid
-    request(`https://graph.qq.com/oauth2.0/me?access_token=${access_token}`, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body) // Show the HTML for the baidu homepage.
-            let params = {}
-            function callback(json) {
-                params = json
-            }
-            eval(body) //
-            console.log(params)
-            console.log(params.client_id)
-            console.log(params.openid)
-            User.findOne({openid: params.openid},function (err,resf) {
-                if (err || !resf) { // 如果没有则插入，有则直接登录
-                    result.status = 1
-                    result.desc = '用户名或密码不正确'
-                } else {
-                    result.phone = resf.phone
-                    result.openid = resf.openid
-                    result.avatar = resf.avatar
-                    //将密匙字符串赋值给req.secret,可以省略，在上面cookieparser()时会自动对secret赋值
-                    // req.secret= signStr;
-                    res.cookie('_M_Session','phone=' + resf.phone + '&openid=' + resf.openid, {
-                        signed: true,
-                        maxAge: 7*24*60*60*1000,
-                        path:'/',
-                        httpOnly:false
-                    });
-                    req.session.userInfo = {
-                        phone: resf.phone,
-                        openid: resf.openid,
-                        avatar: resf.avatar
-                    }
-                }
-                console.log('带签名',JSON.stringify(req.signedCookies));
-                console.log('不带签名',JSON.stringify(req.cookies));
-                console.log('不带签名1:' + JSON.stringify(req.session))
+    console.log('======================222=============')
 
-                // res.send(result)
-                res.send('http://www.mindwen.com')
-            })
+    let openId = req.body.openId;
+    console.log('======================333=============')
+    console.log('======================:' + openId + ':=============')
+    var user = new User({
+        openid: openId
+    });
+    console.log('======================444=============')
+    User.findOne({openid: openId},function (err,resf) {
+        console.log('======================555=============')
+        if (err || !resf) {
+            console.log('======================666=============')
+            // 如果没有则插入，有则直接登录
+            user.save(function (err) {
+                console.log('======================777=============')
+                if (err) {
+                    result.status = 1
+                    result.desc = '登陆失败!'
+                    res.send(result);
                 } else {
-                    console.log(body) // Show the HTML for the baidu homepage.
+                    res.send(result);
                 }
-            })
-    res.send(result)
-})
+            });
+        } else {
+            console.log('======================888=============')
+            result.phone = resf.phone
+            result.openid = resf.openid
+            result.avatar = resf.avatar
+            //将密匙字符串赋值给req.secret,可以省略，在上面cookieparser()时会自动对secret赋值
+            // req.secret= signStr;
+            userUtil.saveUserLogin(res, req, resf.phone, resf.openid, resf.avatar);
+            console.log('======================222=============')
+            res.send(result);
+        }
+    })
+});
 // 登出
 router.all('/logout',function (req,res,next) {
     //销毁session

@@ -8,15 +8,9 @@
     uploadDir: "public/files/img/"
 }*/
 // 本地环境
-/*const cfg = {
+const cfg = {
     accessAllow: 'http://192.168.56.1:8080',
     mongodbconn: 'mongodb://localhost:27017/civilservant',
-    uploadDir: "../public/files/img/"
-}*/
-// 测试
-const cfg = {
-    accessAllow: 'http://10.8.51.181:8080',
-    mongodbconn: 'mongodb://www.mindwen.com:27017/civilservant',
     uploadDir: "../public/files/img/"
 }
 module.exports = cfg
